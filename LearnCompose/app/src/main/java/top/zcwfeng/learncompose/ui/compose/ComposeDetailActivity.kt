@@ -5,14 +5,16 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 import top.zcwfeng.learncompose.utils.DEMO_1
 import top.zcwfeng.learncompose.utils.DEMO_2
 import top.zcwfeng.learncompose.utils.DEMO_3
+import top.zcwfeng.learncompose.utils.DEMO_4
 
 class ComposeDetailActivity : AppCompatActivity() {
 
@@ -33,7 +35,7 @@ class ComposeDetailActivity : AppCompatActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     when (demoStr) {
                         DEMO_1 ->
@@ -42,6 +44,8 @@ class ComposeDetailActivity : AppCompatActivity() {
                             BirthdayGreetingWithImage("Hello Message"," - Weimiao")
                         DEMO_3 ->
                             TipTimeScreen()
+                        DEMO_4 ->
+                            MyApp(Modifier.fillMaxSize())
                     }
                 }
             }

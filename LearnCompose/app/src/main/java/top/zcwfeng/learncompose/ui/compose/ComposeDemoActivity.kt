@@ -5,14 +5,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.fragment.app.FragmentActivity
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
-import top.zcwfeng.learncompose.utils.DEMO_1
-import top.zcwfeng.learncompose.utils.DEMO_2
-import top.zcwfeng.learncompose.utils.DEMO_3
-import top.zcwfeng.learncompose.utils.MyList
+import top.zcwfeng.learncompose.utils.*
 
 class ComposeDemoActivity : AppCompatActivity() {
 
@@ -36,12 +33,13 @@ class ComposeDemoActivity : AppCompatActivity() {
 val demoNames = mutableListOf(
     Pair("基础简单使用入门", DEMO_1),
     Pair("布局简单使用", DEMO_2),
-    Pair("Compose中的状态和开关按钮使用:计算汇率Demo", DEMO_3)
+    Pair("Compose中的状态和开关按钮使用:计算汇率Demo", DEMO_3),
+    Pair("完整的List带有状态Demo", DEMO_4)
 
 )
 
 fun onMyItemClick(context: FragmentActivity?, str: String) {
-    ComposeDetailActivity.launch(context,str)
+    ComposeDetailActivity.launch(context, str)
 }
 
 

@@ -1,4 +1,4 @@
-package top.zcwfeng.learncompose.ui.home
+package top.zcwfeng.learncompose.ui.slideshow.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
