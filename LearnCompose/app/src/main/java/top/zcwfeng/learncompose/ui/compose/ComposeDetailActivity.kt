@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
+import top.zcwfeng.learncompose.ui.theme.BasicsCodelabTheme
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 import top.zcwfeng.learncompose.utils.DEMO_1
 import top.zcwfeng.learncompose.utils.DEMO_2
@@ -31,24 +32,31 @@ class ComposeDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val demoStr = intent.getStringExtra("demo_key")
         setContent {
-            LearnComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    when (demoStr) {
-                        DEMO_1 ->
-                            demoTextJustify()
-                        DEMO_2 ->
-                            BirthdayGreetingWithImage("Hello Message"," - Weimiao")
-                        DEMO_3 ->
-                            TipTimeScreen()
-                        DEMO_4 ->
-                            MyApp(Modifier.fillMaxSize())
+            when(demoStr) {
+                DEMO_4 ->
+                    BasicsCodelabTheme() {
+                        MyApp(Modifier.fillMaxSize())
                     }
-                }
+                else ->
+                    LearnComposeTheme {
+                        // A surface container using the 'background' color from the theme
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.background
+                        ) {
+                            when (demoStr) {
+                                DEMO_1 ->
+                                    demoTextJustify()
+                                DEMO_2 ->
+                                    BirthdayGreetingWithImage("Hello Message"," - Weimiao")
+                                DEMO_3 ->
+                                    TipTimeScreen()
+
+                            }
+                        }
+                    }
             }
+
         }
     }
 }

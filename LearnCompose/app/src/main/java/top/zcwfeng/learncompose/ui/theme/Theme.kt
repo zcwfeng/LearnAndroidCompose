@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -32,6 +33,21 @@ private val LightColorPalette = lightColorScheme(
     onSurface = Color.Black,
     */
 )
+//--------------------------------new theme
+private val LightColorScheme = lightColorScheme(
+    surface = Blue,
+    onSurface = Color.White,
+    primary = LightBlue,
+    onPrimary = Navy
+)
+
+private val DarkColorScheme = darkColorScheme(
+    surface = Blue,
+    onSurface = Navy,
+    primary = Navy,
+    onPrimary = Chartreuse
+)
+
 
 @Composable
 fun LearnComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
@@ -62,8 +78,8 @@ fun BasicsCodelabTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorPalette
-        else -> LightColorPalette
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
