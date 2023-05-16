@@ -16,8 +16,8 @@ import androidx.compose.foundation.lazy.items
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun Greeting(name: String) {
-    val expanded = remember{mutableStateOf(false)}
-    val extraPadding by animateDpAsState(targetValue = if (expanded.value) 48.dp else 0.dp)
+    var expanded  by remember{mutableStateOf(false)}
+    val extraPadding by animateDpAsState(if (expanded) 48.dp else 0.dp)
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
@@ -33,8 +33,8 @@ fun Greeting(name: String) {
                 Text(text = "$name")
 
             }
-            ElevatedButton(onClick = { expanded.value = !expanded.value }) {
-                Text(if (expanded.value) "Show less" else "Show more")
+            ElevatedButton(onClick = { expanded = !expanded }) {
+                Text(if (expanded) "Show less" else "Show more")
             }
         }
     }
