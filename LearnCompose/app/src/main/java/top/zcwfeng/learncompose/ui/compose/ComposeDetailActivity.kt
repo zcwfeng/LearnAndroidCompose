@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import top.zcwfeng.learncompose.ui.theme.BasicsCodelabTheme
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
-import top.zcwfeng.learncompose.utils.DEMO_1
-import top.zcwfeng.learncompose.utils.DEMO_2
-import top.zcwfeng.learncompose.utils.DEMO_3
-import top.zcwfeng.learncompose.utils.DEMO_4
+import top.zcwfeng.learncompose.utils.*
 
 class ComposeDetailActivity : AppCompatActivity() {
 
@@ -37,6 +34,8 @@ class ComposeDetailActivity : AppCompatActivity() {
                     BasicsCodelabTheme() {
                         MyApp(Modifier.fillMaxSize())
                     }
+                DEMO_5 ->
+                    MySootheApp()
                 else ->
                     LearnComposeTheme {
                         // A surface container using the 'background' color from the theme

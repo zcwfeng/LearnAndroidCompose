@@ -34,7 +34,8 @@ val demoNames = mutableListOf(
     Pair("基础简单使用入门", DEMO_1),
     Pair("布局简单使用", DEMO_2),
     Pair("Compose中的状态和开关按钮使用:计算汇率Demo", DEMO_3),
-    Pair("完整的List带有状态Demo", DEMO_4)
+    Pair("完整的List带有状态Demo", DEMO_4),
+    Pair("完整滑动页面例子", DEMO_5)
 
 )
 
