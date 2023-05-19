@@ -40,5 +40,6 @@
     <string name="bottom_navigation_profile">PROFILE</string>
     <string name="placeholder_search">Search</string>
 
-
+    <string name="home">Home</string>
+    <string name="work">Work</string>
 </resources>
