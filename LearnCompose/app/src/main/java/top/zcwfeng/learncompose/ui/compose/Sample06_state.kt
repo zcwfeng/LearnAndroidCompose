@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import top.zcwfeng.learncompose.ui.compose.data.WellnessTasksList
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 
 @Composable
@@ -57,12 +59,37 @@ fun WaterCounter(modifier: Modifier = Modifier) {
 @Composable
 fun WellnessScreen(modifier: Modifier = Modifier) {
 //    WaterCounter(modifier)
-    StatefulCounter(modifier)
+    Column (modifier = modifier){
+        StatefulCounter()
+        WellnessTasksList()
+    }
+
 }
 
+/**
+ * 2. 添加一个有状态 WellnessTaskItem 可组合函数，用于定义状态变量 checkedState 并将其传递给同名的无状态方法。
+ */
+@Composable
+fun WellnessTaskItem(taskName: String, modifier: Modifier = Modifier,onClose: () -> Unit) {
+    var checkedState by rememberSaveable { mutableStateOf(false) }
+
+    WellnessTaskItem(
+        taskName = taskName,
+        checked = checkedState,
+        onCheckedChange = { newValue -> checkedState = newValue },
+        onClose = {}, // we will implement this later!
+        modifier = modifier,
+    )
+}
+
+/**
+ * 1. 修改列表项。您可以重复使用“组合中的记忆功能”部分中的 WellnessTaskItem，并将其更新为包含 Checkbox。请务必提升 checked 状态和 onCheckedChange 回调，使函数变为无状态。
+ */
 @Composable
 fun WellnessTaskItem(
     taskName: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -75,6 +102,7 @@ fun WellnessTaskItem(
                 .padding(start = 16.dp),
             text = taskName
         )
+        Checkbox(checked = checked, onCheckedChange = onCheckedChange)
         IconButton(onClick = onClose) {
             Icon(Icons.Filled.Close, contentDescription = "Close")
         }
@@ -107,7 +135,7 @@ fun StatelessCounter(count: Int, onIncrement: () -> Unit, modifier: Modifier = M
  * StatefulCounter 拥有状态。这意味着，它会存储 count 状态，并在调用 StatelessCounter 函数时对其进行修改。
  */
 @Composable
-fun StatefulCounter(modifier:Modifier) {
+fun StatefulCounter() {
     var count by rememberSaveable { mutableStateOf(0) }
 //    var juiceCount by remember { mutableStateOf(0) }
 
@@ -138,3 +166,5 @@ private fun WellnessScreenPreview() {
         }
     }
 }
+
+
