@@ -35,7 +35,8 @@ val demoNames = mutableListOf(
     Pair("布局简单使用", DEMO_2),
     Pair("Compose中的状态和开关按钮使用:计算汇率Demo", DEMO_3),
     Pair("完整的List带有状态Demo", DEMO_4),
-    Pair("完整滑动页面例子", DEMO_5)
+    Pair("完整滑动页面例子", DEMO_5),
+    Pair("Jetpack Compose 重组状态详解", DEMO_6)
 
 )
 
@@ -44,7 +45,7 @@ fun onMyItemClick(context: FragmentActivity?, str: String) {
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LearnComposeApp(context: FragmentActivity?) {
     LearnComposeTheme {

@@ -34,8 +34,7 @@ class ComposeDetailActivity : AppCompatActivity() {
                     BasicsCodelabTheme() {
                         MyApp(Modifier.fillMaxSize())
                     }
-                DEMO_5 ->
-                    MySootheApp()
+
                 else ->
                     LearnComposeTheme {
                         // A surface container using the 'background' color from the theme
@@ -50,6 +49,10 @@ class ComposeDetailActivity : AppCompatActivity() {
                                     BirthdayGreetingWithImage("Hello Message"," - Weimiao")
                                 DEMO_3 ->
                                     TipTimeScreen()
+                                DEMO_5 ->
+                                    MySootheApp()
+                                DEMO_6 ->
+                                    WellnessScreen()
 
                             }
                         }
