@@ -19,11 +19,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import top.zcwfeng.learncompose.ui.compose.data.WellnessTask
 import top.zcwfeng.learncompose.ui.compose.data.WellnessTasksList
+import top.zcwfeng.learncompose.ui.compose.data.getWellnessTasks
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 
 @Composable
@@ -59,9 +63,16 @@ fun WaterCounter(modifier: Modifier = Modifier) {
 @Composable
 fun WellnessScreen(modifier: Modifier = Modifier) {
 //    WaterCounter(modifier)
-    Column (modifier = modifier){
+    Column(modifier = modifier) {
         StatefulCounter()
-        WellnessTasksList()
+//Please consider implementing a custom Saver for this class and pass it to rememberSaveable().
+//        val list:SnapshotStateList<WellnessTask> = rememberSaveable {
+//            getWellnessTasks().toMutableStateList()
+//        }
+        val list:SnapshotStateList<WellnessTask> = remember {
+            getWellnessTasks().toMutableStateList()
+        }
+        WellnessTasksList(list = list, onCloseTask = { task -> list.remove(task) })
     }
 
 }
@@ -70,14 +81,14 @@ fun WellnessScreen(modifier: Modifier = Modifier) {
  * 2. 添加一个有状态 WellnessTaskItem 可组合函数，用于定义状态变量 checkedState 并将其传递给同名的无状态方法。
  */
 @Composable
-fun WellnessTaskItem(taskName: String, modifier: Modifier = Modifier,onClose: () -> Unit) {
+fun WellnessTaskItem(taskName: String, modifier: Modifier = Modifier, onClose: () -> Unit) {
     var checkedState by rememberSaveable { mutableStateOf(false) }
 
     WellnessTaskItem(
         taskName = taskName,
         checked = checkedState,
         onCheckedChange = { newValue -> checkedState = newValue },
-        onClose = {}, // we will implement this later!
+        onClose = onClose, // we will implement this later!
         modifier = modifier,
     )
 }
@@ -113,7 +124,7 @@ fun WellnessTaskItem(
 @Preview(showBackground = true)
 @Composable
 private fun WellnessTaskItemPreview() {
-    WellnessTaskItem(taskName = "Demo", onClose = { /*TODO*/ })
+    WellnessTaskItem(taskName = "Demo", modifier = Modifier, onClose = {})
 }
 
 /**
