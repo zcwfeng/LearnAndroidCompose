@@ -19,16 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import top.zcwfeng.learncompose.ui.compose.data.WellnessTask
+import androidx.lifecycle.viewmodel.compose.viewModel
 import top.zcwfeng.learncompose.ui.compose.data.WellnessTasksList
-import top.zcwfeng.learncompose.ui.compose.data.getWellnessTasks
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
+import top.zcwfeng.learncompose.viewmodel.WellnessViewModel
 
 @Composable
 fun WaterCounter(modifier: Modifier = Modifier) {
@@ -61,18 +59,19 @@ fun WaterCounter(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun WellnessScreen(modifier: Modifier = Modifier) {
-//    WaterCounter(modifier)
-    Column(modifier = modifier) {
+fun WellnessScreen(
+    modifier: Modifier = Modifier,
+    wellnessViewModel: WellnessViewModel = viewModel()
+) {
+    Column(
+        modifier = modifier
+    ) {
         StatefulCounter()
-//Please consider implementing a custom Saver for this class and pass it to rememberSaveable().
-//        val list:SnapshotStateList<WellnessTask> = rememberSaveable {
-//            getWellnessTasks().toMutableStateList()
-//        }
-        val list:SnapshotStateList<WellnessTask> = remember {
-            getWellnessTasks().toMutableStateList()
-        }
-        WellnessTasksList(list = list, onCloseTask = { task -> list.remove(task) })
+        WellnessTasksList(list = wellnessViewModel.tasks,
+            onCheckedTask = { task, checked ->
+                wellnessViewModel.changeTaskChecked(task, checked)
+            },
+            onCloseTask = { task -> wellnessViewModel.remove(task) })
     }
 
 }
