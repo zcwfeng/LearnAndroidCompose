@@ -36,7 +36,14 @@ val demoNames = mutableListOf(
     Pair("Compose中的状态和开关按钮使用:计算汇率Demo", DEMO_3),
     Pair("完整的List带有状态Demo", DEMO_4),
     Pair("完整滑动页面例子", DEMO_5),
-    Pair("Jetpack Compose 重组状态详解", DEMO_6)
+    Pair("Jetpack Compose 重组状态详解", DEMO_6),
+    Pair("--------------------------", ""),
+    Pair("NDK Demo Base", NDK_DEMO_1),
+    Pair("NDK Array", NDK_DEMO_2),
+    Pair("NDK Class putObject", NDK_DEMO_3),
+    Pair("NDK  insertObject", NDK_DEMO_4),
+    Pair("NDK test Quote", NDK_DEMO_5),
+    Pair("NDK del Quote", NDK_DEMO_6)
 
 )
 

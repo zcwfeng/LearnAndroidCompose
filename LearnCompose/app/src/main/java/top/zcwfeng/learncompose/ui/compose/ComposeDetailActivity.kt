@@ -10,17 +10,18 @@ import androidx.compose.material3.Surface
 
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
+import top.zcwfeng.learncompose.native.JNIDemo
 import top.zcwfeng.learncompose.ui.theme.BasicsCodelabTheme
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 import top.zcwfeng.learncompose.utils.*
 
 class ComposeDetailActivity : AppCompatActivity() {
-
+    val jniDemo: JNIDemo = JNIDemo()
 
     companion object {
-        fun launch(context: FragmentActivity?,value:String) {
+        fun launch(context: FragmentActivity?, value: String) {
             val intent = Intent(context, ComposeDetailActivity::class.java)
-            intent.putExtra("demo_key",value)
+            intent.putExtra("demo_key", value)
             context?.startActivity(intent)
         }
     }
@@ -29,7 +30,7 @@ class ComposeDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val demoStr = intent.getStringExtra("demo_key")
         setContent {
-            when(demoStr) {
+            when (demoStr) {
                 DEMO_4 ->
                     BasicsCodelabTheme() {
                         MyApp(Modifier.fillMaxSize())
@@ -45,14 +46,50 @@ class ComposeDetailActivity : AppCompatActivity() {
                             when (demoStr) {
                                 DEMO_1 ->
                                     demoTextJustify()
+
                                 DEMO_2 ->
-                                    BirthdayGreetingWithImage("Hello Message"," - Weimiao")
+                                    BirthdayGreetingWithImage("Hello Message", " - Weimiao")
+
                                 DEMO_3 ->
                                     TipTimeScreen()
+
                                 DEMO_5 ->
                                     MySootheApp()
+
                                 DEMO_6 ->
                                     WellnessScreen()
+
+                                NDK_DEMO_1 -> {
+                                    println("name修改前是：${jniDemo.name}")
+                                    jniDemo.changeName()
+                                    println("name修改后是：${jniDemo.name}")
+
+
+                                    println("age修改前是：${JNIDemo.age}")
+                                    JNIDemo.changeAge()
+                                    println("age修改后是：${JNIDemo.age}")
+
+                                    jniDemo.callAddMethod()
+                                    jniDemo.callShowStringMethod()
+                                }
+
+                                NDK_DEMO_2 -> {
+                                    jniDemo.testArray()
+                                }
+
+                                NDK_DEMO_3 -> {
+                                    jniDemo.testPutObject();
+                                }
+
+                                NDK_DEMO_4 -> {
+                                    jniDemo.insertObject()
+                                }
+                                NDK_DEMO_5 -> {
+                                    jniDemo.testQuote()
+                                }
+                                NDK_DEMO_6 -> {
+                                    jniDemo.delQuote()
+                                }
 
                             }
                         }
@@ -60,6 +97,11 @@ class ComposeDetailActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        jniDemo.delQuote()
     }
 }
 

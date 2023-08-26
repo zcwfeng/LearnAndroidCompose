@@ -18,7 +18,6 @@ class GalleryFragment : Fragment() {
 
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
-    val jniDemo: JNIDemo = JNIDemo()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,21 +35,10 @@ class GalleryFragment : Fragment() {
             textView.text = it
         }
         textView.setOnClickListener {
-//          ComposeDemoActivity.launch(this.activity)
-            textView.text = jniDemo.stringFromJNI()
+          ComposeDemoActivity.launch(this.activity)
         }
 
-        println("name修改前是：${jniDemo.name}")
-        jniDemo.changeName()
-        println("name修改后是：${jniDemo.name}")
 
-
-        println("age修改前是：${JNIDemo.age}")
-        JNIDemo.changeAge()
-        println("age修改后是：${JNIDemo.age}")
-
-        jniDemo.callAddMethod()
-        jniDemo.callShowStringMethod()
 
         return root
     }
