@@ -1,5 +1,6 @@
 package top.zcwfeng.learncompose.ui.compose
 
+import FmodDemoApp
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.compose.material3.Surface
 
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
+import org.fmod.FMOD
 import top.zcwfeng.learncompose.native.JNIDemo
 import top.zcwfeng.learncompose.ui.theme.BasicsCodelabTheme
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
@@ -29,6 +31,7 @@ class ComposeDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val demoStr = intent.getStringExtra("demo_key")
+        FMOD.init(this)
         setContent {
             when (demoStr) {
                 DEMO_4 ->
@@ -84,11 +87,17 @@ class ComposeDetailActivity : AppCompatActivity() {
                                 NDK_DEMO_4 -> {
                                     jniDemo.insertObject()
                                 }
+
                                 NDK_DEMO_5 -> {
                                     jniDemo.testQuote()
                                 }
+
                                 NDK_DEMO_6 -> {
                                     jniDemo.delQuote()
+                                }
+
+                                NDK_DEMO_FMOD -> {
+                                    FmodDemoApp()
                                 }
 
                             }
@@ -102,6 +111,8 @@ class ComposeDetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         jniDemo.delQuote()
+        FMOD.close()
+
     }
 }
 

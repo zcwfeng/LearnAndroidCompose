@@ -43,7 +43,9 @@ val demoNames = mutableListOf(
     Pair("NDK Class putObject", NDK_DEMO_3),
     Pair("NDK  insertObject", NDK_DEMO_4),
     Pair("NDK test Quote", NDK_DEMO_5),
-    Pair("NDK del Quote", NDK_DEMO_6)
+    Pair("NDK del Quote", NDK_DEMO_6),
+    Pair("Fmod 变声库的例子", NDK_DEMO_FMOD)
+
 
 )
 
