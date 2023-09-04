@@ -10,8 +10,12 @@ const val DEMO_6 = "DEMO_6_state_more"
 const val NDK_DEMO_1 = "NDK_BASE"
 const val NDK_DEMO_2 = "NDK_Array"
 const val NDK_DEMO_3 = "NDK_Class"
-const val NDK_DEMO_4 = "NDK_Class2"
-const val NDK_DEMO_5 = "NDK_Class3"
-const val NDK_DEMO_6 = "NDK_Class4"
+const val NDK_DEMO_4 = "NDK_Class4"
+const val NDK_DEMO_5 = "NDK_Class5"
+const val NDK_DEMO_6 = "NDK_Class6"
+const val NDK_DEMO_7 = "NDK_Class7"
+const val NDK_DEMO_8 = "NDK_Class8"
+const val NDK_DEMO_9 = "NDK_Class9"
+
 const val NDK_DEMO_FMOD = "NDK_DEMO_FMOD";
 

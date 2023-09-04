@@ -1,12 +1,17 @@
 package top.zcwfeng.learncompose.native
 
+import android.app.AlertDialog
+import android.os.Looper
 import android.util.Log
+import top.zcwfeng.learncompose.ui.compose.ComposeDetailActivity
 import top.zcwfeng.learncompose.ui.compose.data.Student
 
 
 
-class JNIDemo {
+class JNIDemo(_composeDetailActivity: ComposeDetailActivity) {
     val TAG = JNIDemo.javaClass.name
+
+    val composeDetailActivity = _composeDetailActivity
 
     val name = "David" // 等下 用 C++代码，修改为Beyond
 
@@ -50,13 +55,17 @@ class JNIDemo {
 
     external fun delQuote() // 释放全局引用
 
+    external fun dynamicJavaMethod()
+    external fun dynamicJavaMethodParam(value:String):Int
+
+    external fun nativeThread();
+    external fun nativeClose();
 
     companion object {
         @JvmStatic
         val age = 10
         @JvmStatic
         external fun changeAge() // 改变我们的属性name
-
         // Used to load the 'temp' library on application startup.
         init {
             System.loadLibrary("learncompose")
@@ -83,5 +92,32 @@ class JNIDemo {
 
         println("studnet:$student")
     }
+
+
+    fun updateUI(){
+        println("updateUI......")
+
+        if (Looper.getMainLooper() == Looper.myLooper()) { //  C++ 用主线程调用到此函数 ---->  主线程
+            AlertDialog.Builder(composeDetailActivity)
+                .setTitle("UI")
+                .setMessage("updateActivityUI Activity UI ...")
+                .setPositiveButton("老夫知道了", null)
+                .show()
+        } else {  //  C++ 用异步线程调用到此函数 ---->  异步线程
+            Log.d("Derry", "updateActivityUI 所属于子线程，只能打印日志了..")
+            composeDetailActivity.runOnUiThread { // 可以在子线程里面 操作UI
+                AlertDialog.Builder(composeDetailActivity)
+                    .setTitle("updateActivityUI")
+                    .setMessage("所属于子线程，只能打印日志了..")
+                    .setPositiveButton("老夫知道了", null)
+                    .show()
+            }
+        }
+    }
+
+
+
+
+
 
 }

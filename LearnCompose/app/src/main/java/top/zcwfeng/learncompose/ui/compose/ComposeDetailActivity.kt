@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
 import org.fmod.FMOD
@@ -17,8 +16,9 @@ import top.zcwfeng.learncompose.ui.theme.BasicsCodelabTheme
 import top.zcwfeng.learncompose.ui.theme.LearnComposeTheme
 import top.zcwfeng.learncompose.utils.*
 
+
 class ComposeDetailActivity : AppCompatActivity() {
-    val jniDemo: JNIDemo = JNIDemo()
+    var jniDemo: JNIDemo = JNIDemo(this)
 
     companion object {
         fun launch(context: FragmentActivity?, value: String) {
@@ -96,6 +96,20 @@ class ComposeDetailActivity : AppCompatActivity() {
                                     jniDemo.delQuote()
                                 }
 
+                                NDK_DEMO_7 -> {
+                                    jniDemo.dynamicJavaMethod()
+                                }
+
+                                NDK_DEMO_8 -> {
+                                    val a = jniDemo.dynamicJavaMethodParam("动态注册,神功")
+                                    println("动态注册返回，$a")
+                                }
+
+                                NDK_DEMO_9 -> {
+
+                                    jniDemo.nativeThread()
+                                }
+
                                 NDK_DEMO_FMOD -> {
                                     FmodDemoApp()
                                 }
@@ -107,6 +121,9 @@ class ComposeDetailActivity : AppCompatActivity() {
 
         }
     }
+
+
+
 
     override fun onDestroy() {
         super.onDestroy()

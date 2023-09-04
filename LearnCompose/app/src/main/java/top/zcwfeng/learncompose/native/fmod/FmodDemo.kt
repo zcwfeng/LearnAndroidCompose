@@ -15,9 +15,9 @@ class FmodDemo {
         const val MODE_JINGSONG = 3 // 惊悚
         const val MODE_GAOGUAI = 4 // 搞怪
         const val MODE_KONGLING = 5 // 空灵
-        init {
-            System.loadLibrary("learncompose")
-        }
+//        init {
+//            System.loadLibrary("learncompose")
+//        }
     }
 
     // 给C++调用的函数

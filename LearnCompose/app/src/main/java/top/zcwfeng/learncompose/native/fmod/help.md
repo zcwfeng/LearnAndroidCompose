@@ -5,7 +5,7 @@ Pitch: 音调调节 默认：1.0  2.0 萝莉 0.8 大叔 0.5 老头
 Tremolo 颤音调剂 默认：5.0  2.0 颤音
 ECHO 回音
 
-# 引入c库
+>引入c库
 
 adb shell getprop ro.product.cpu.abi
 查看芯片类型

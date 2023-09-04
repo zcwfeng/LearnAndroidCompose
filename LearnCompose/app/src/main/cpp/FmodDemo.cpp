@@ -6,6 +6,7 @@
 // Created by zcwfeng on 2023/8/28.
 //
 #include "common.h"
+#include "pthread.h"
 
 // 此处代码是，上层六个常量所对应的，六个宏
 
@@ -24,23 +25,37 @@
 
 
 
+// 音效系统
+FMOD::System * system = 0;
+// 声音
+FMOD::Sound * sound = 0;
+// 音轨,声音放在上面
+FMOD::Channel * channel = 0;
+// DSP 声音处理
+FMOD::DSP *dsp = 0;
+char * _content = "默认 播放完毕";
+const char * _path;
+
+void* player_run(void * args){
+//    jint mode = reinterpret_cast<jint>(args);
+
+    // 监听是否channel 结束，一直等待（应该用pthread）
+    bool isPlayer = 9;
+    while (isPlayer) {
+        channel->isPlaying(&isPlayer);
+//        usleep(1000 * 1000);
+    }
+    LOGD("Thread C++ FMOD mode")
+    return nullptr;
+};
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_top_zcwfeng_learncompose_native_fmod_FmodDemo_voiceChangeNative(JNIEnv *env, jobject thiz,
                                                                      jint mode, jstring path) {
     LOGD("%s","voice begin....")
-    char * _content = "默认 播放完毕";
 
-    const char * _path = env->GetStringUTFChars(path,NULL);
-    // 音效系统
-    FMOD::System * system = 0;
-    // 声音
-    FMOD::Sound * sound = 0;
-    // 音轨,声音放在上面
-    FMOD::Channel * channel = 0;
-    // DSP 声音处理
-    FMOD::DSP *dsp = 0;
+    _path = env->GetStringUTFChars(path,NULL);
 
     FMOD::System_Create(&system);
 
@@ -114,12 +129,9 @@ Java_top_zcwfeng_learncompose_native_fmod_FmodDemo_voiceChangeNative(JNIEnv *env
             break;
     }
 
-    // 监听是否channel 结束，一直等待（应该用pthread）
-    bool isPlayer = 9;
-    while (isPlayer) {
-        channel->isPlaying(&isPlayer);
-        usleep(1000 * 1000);
-    }
+    pthread_t playerThread;
+    pthread_create(&playerThread, nullptr, player_run, &mode);
+    pthread_join(playerThread, nullptr);
 
     sound->release();
     system->close();
