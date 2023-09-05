@@ -11,7 +11,6 @@ public:
 };
 
 
-
 extern "C" JNIEXPORT jstring JNICALL
 Java_top_zcwfeng_learncompose_native_JNIDemo_stringFromJNI(
         JNIEnv *env,
@@ -228,20 +227,20 @@ Java_top_zcwfeng_learncompose_native_JNIDemo_delQuote(JNIEnv *env, jobject thiz)
 
 }
 
-JavaVM * vm = nullptr;
+JavaVM *vm = nullptr;
 
-void *cpp_thread_run(void * args) {
+void *cpp_thread_run(void *args) {
     LOGD("C++ pthread 的异步线程")
-    MyContext * context = static_cast<MyContext *>(args);
+    MyContext *context = static_cast<MyContext *>(args);
     JNIEnv *jniEnv;
     jint r = ::vm->AttachCurrentThread(&jniEnv, nullptr);
-    if(r) {
+    if (r) {
         return nullptr;
     }
 //    jclass class1 = jniEnv->GetObjectClass(context->obj);
     jclass clazz = jniEnv->GetObjectClass(context->obj);
-    jmethodID updateUI =  jniEnv->GetMethodID(clazz, "updateUI", "()V");
-    jniEnv->CallVoidMethod(context->obj,updateUI);
+    jmethodID updateUI = jniEnv->GetMethodID(clazz, "updateUI", "()V");
+    jniEnv->CallVoidMethod(context->obj, updateUI);
     ::vm->DetachCurrentThread();
     return nullptr;
 }
@@ -276,28 +275,28 @@ void dynamicAction(JNIEnv *env, jobject thiz) {
 }
 
 int dynamicActionParam(JNIEnv *env, jobject thiz, jstring value) {
-    const char * _value = env->GetStringUTFChars(value,NULL);
-    LOGD("C++ 动态注册2---param %s\n",_value);
-    env->ReleaseStringUTFChars(value,_value);
+    const char *_value = env->GetStringUTFChars(value, NULL);
+    LOGD("C++ 动态注册2---param %s\n", _value);
+    env->ReleaseStringUTFChars(value, _value);
 
 
     return JNI_OK;
 }
 
-static const JNINativeMethod methods[]={
-        {"dynamicJavaMethod", "()V", (void *) (dynamicAction)},
+static const JNINativeMethod methods[] = {
+        {"dynamicJavaMethod",      "()V",                   (void *) (dynamicAction)},
         {"dynamicJavaMethodParam", "(Ljava/lang/String;)I", (int *) (dynamicActionParam)}
 
 };
 extern "C"
-JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved){
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
     ::vm = vm;
-    JNIEnv * env;
+    JNIEnv *env;
     jint r = vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6);
     // evn-> RegisterMethods(一次性注册 n 个动态函数)
     // 框架设计是一级指针传递地址即可 &env，如果是二级指针，需要传递一级指针地址。
-    if(r != JNI_OK) {
+    if (r != JNI_OK) {
         LOGE("C++ 动态注册环境异常")
         return -1;
     }
@@ -309,8 +308,9 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved){
 //        const char* signature; 函数签名
 //        void*       fnPtr; 函数指针--C++函数
 //    } JNINativeMethod;
-    jint code = env->RegisterNatives(jniDemoClass,methods,sizeof(methods) / sizeof(JNINativeMethod));
-    if(!code) {
+    jint code = env->RegisterNatives(jniDemoClass, methods,
+                                     sizeof(methods) / sizeof(JNINativeMethod));
+    if (!code) {
         LOGD("C++ 动态注册成功")
 
     } else {
@@ -319,4 +319,119 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, void* reserved){
     return JNI_VERSION_1_6;
 }
 
+int compare(const jint * value1, const jint * value2){
+    return *value2 - *value1;
+}
 
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_sort(JNIEnv *env, jobject thiz, jintArray arr) {
+    jint *intArray = env->GetIntArrayElements(arr, nullptr);
+    int len = env->GetArrayLength(arr);
+    // 排序, 工具,void qsort(void* __base, size_t __nmemb, size_t __size, int (*__comparator)(const void* __lhs, const void* __rhs));
+    qsort(intArray, len, sizeof(int ),
+          reinterpret_cast<int (*)(const void *, const void *)>(compare));
+    env->ReleaseIntArrayElements(arr, intArray, JNI_COMMIT);
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_localCache(JNIEnv *env, jclass clazz, jstring name) {
+
+// static jfieldID f_id = nullptr;
+    // if (f_id == nullptr) {
+    jfieldID f_id = env->GetStaticFieldID(clazz, "name1", "Ljava/lang/String;");
+    /*} else {
+        LOGI("fieldID是空的呀");
+    }*/
+
+    env->SetStaticObjectField(clazz, f_id, name); // 基本操作
+
+    // f_id = nullptr;
+
+}
+static jfieldID f_name1_id = nullptr;
+static jfieldID f_name2_id = nullptr;
+static jfieldID f_name3_id = nullptr;
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_initialCache(JNIEnv *env, jclass clazz) {
+    // 初始化全局静态缓存
+    f_name1_id = env->GetStaticFieldID(clazz, "name1", "Ljava/lang/String;");
+    f_name2_id = env->GetStaticFieldID(clazz, "name2", "Ljava/lang/String;");
+    f_name3_id = env->GetStaticFieldID(clazz, "name3", "Ljava/lang/String;");
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_staticCache(JNIEnv *env, jclass clazz, jstring name) {
+    // 如果这个方法会反复的被调用，那么不会反复的去获取jfieldID，因为是先初始化静态缓存，然后再执行此函数的
+    env->SetStaticObjectField(clazz, f_name1_id, name);
+    env->SetStaticObjectField(clazz, f_name2_id, name);
+    env->SetStaticObjectField(clazz, f_name3_id, name);
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_clearStaticCache(JNIEnv *env, jclass clazz) {
+    f_name1_id = nullptr;
+    f_name2_id = nullptr;
+    f_name3_id = nullptr;
+    LOGD("静态缓存清除完毕...");
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_exception(JNIEnv *env, jclass clazz) {
+    jfieldID f_id = env->GetStaticFieldID(clazz,"name999","Ljava/lang/String;");
+
+    jthrowable throwable = env->ExceptionOccurred();// 检测本次函数是否有异常
+
+    if(throwable) {
+        LOGD("检测到代码异常native层")
+        // clear 异常
+        env->ExceptionClear();
+        f_id = env->GetStaticFieldID(clazz,"name1","Ljava/lang/String;");
+    }
+
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_exception2(JNIEnv *env, jclass clazz) {
+    jfieldID f_id = env->GetStaticFieldID(clazz,"name222","Ljava/lang/String;");
+
+    jthrowable throwable = env->ExceptionOccurred();// 检测本次函数是否有异常
+
+    if(throwable) {
+        LOGD("检测到代码异常native层")
+        // clear 异常
+        env->ExceptionClear();
+
+        jclass no_such_clz = env->FindClass("java/lang/NoSuchFieldException");
+        env->ThrowNew(no_such_clz,"native 层NoSuchMethodException，找不到name222，crash！！！");
+    }
+
+
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_JNIDemo_exception3(JNIEnv *env, jclass clazz) {
+    jmethodID show_mid = env->GetStaticMethodID(clazz,"show", "()V");
+    env->CallStaticVoidMethod(clazz,show_mid);
+
+    if(env->ExceptionCheck()) {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+    }
+    // JNIEnv的操作
+    env->GetStaticFieldID(clazz, "name1", "Ljava/lang/String;");
+
+    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.1");
+    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.2");
+    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.3");
+    // JNIEnv的操作
+    env->GetStaticFieldID(clazz, "name2", "Ljava/lang/String;");
+
+}

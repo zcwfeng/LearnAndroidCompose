@@ -47,6 +47,9 @@ val demoNames = mutableListOf(
     Pair("NDK 动态注册", NDK_DEMO_7),
     Pair("NDK 有参数动态注册", NDK_DEMO_8),
     Pair("NDK p_thread 原理使用", NDK_DEMO_9),
+    Pair("NDK stdlib工具箱 qsort", NDK_DEMO_10),
+    Pair("NDK 缓存策略", NDK_DEMO_11),
+    Pair("NDK 3种异常演示", NDK_DEMO_12),
     Pair("Fmod 变声库的例子", NDK_DEMO_FMOD)
 
 

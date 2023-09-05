@@ -110,6 +110,21 @@ class ComposeDetailActivity : AppCompatActivity() {
                                     jniDemo.nativeThread()
                                 }
 
+                                NDK_DEMO_10 -> {
+
+                                    jniDemo.sortAction()
+                                }
+
+                                NDK_DEMO_11 -> {
+
+                                    jniDemo.staticCacheAction()
+                                }
+
+                                NDK_DEMO_12 -> {
+
+                                    jniDemo.exceptionAction()
+                                }
+
                                 NDK_DEMO_FMOD -> {
                                     FmodDemoApp()
                                 }
@@ -121,8 +136,6 @@ class ComposeDetailActivity : AppCompatActivity() {
 
         }
     }
-
-
 
 
     override fun onDestroy() {

@@ -16,6 +16,9 @@ const val NDK_DEMO_6 = "NDK_Class6"
 const val NDK_DEMO_7 = "NDK_Class7"
 const val NDK_DEMO_8 = "NDK_Class8"
 const val NDK_DEMO_9 = "NDK_Class9"
+const val NDK_DEMO_10 = "NDK_Class10"
+const val NDK_DEMO_11 = "NDK_Class11"
+const val NDK_DEMO_12 = "NDK_Class12"
 
 const val NDK_DEMO_FMOD = "NDK_DEMO_FMOD";
 
