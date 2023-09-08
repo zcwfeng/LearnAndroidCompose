@@ -1,5 +1,8 @@
 package top.zcwfeng.learncompose.native
 
+import android.app.AlertDialog
+import android.os.Looper
+import android.os.Parcel
 import android.util.Log
 import top.zcwfeng.learncompose.ui.compose.ComposeDetailActivity
 import top.zcwfeng.learncompose.ui.compose.data.Student
@@ -68,23 +71,31 @@ class JNIDemo(_composeDetailActivity: ComposeDetailActivity) {
         // 假设这里定义了一大堆变量
         @JvmStatic
         var name1 = "T1"
+
         @JvmStatic
         var name2 = "T2"
+
         @JvmStatic
         var name3 = "T3"
 
         @JvmStatic
         external fun changeAge() // 改变我们的属性name
+
         @JvmStatic
-        external fun localCache(name:String)
+        external fun localCache(name: String)
+
         @JvmStatic
         external fun initialCache()
+
         @JvmStatic
-        external fun staticCache(name:String)
+        external fun staticCache(name: String)
+
         @JvmStatic
         external fun clearStaticCache()
+
         @JvmStatic
         external fun exception()// C++ 处理异常
+
         @JvmStatic
         @Throws(NoSuchFieldException::class)
         external fun exception2() // C++异常抛出给java
@@ -111,8 +122,7 @@ class JNIDemo(_composeDetailActivity: ComposeDetailActivity) {
     }
 
 
-
-    fun  exceptionAction() {
+    fun exceptionAction() {
         exception();
 
         try {
@@ -145,10 +155,31 @@ class JNIDemo(_composeDetailActivity: ComposeDetailActivity) {
         println("studnet:$student")
     }
 
-    fun sortAction(){
+    fun updateUI(){
+        println("updateUI......")
+
+        if (Looper.getMainLooper() == Looper.myLooper()) { //  C++ 用主线程调用到此函数 ---->  主线程
+            AlertDialog.Builder(composeDetailActivity)
+                .setTitle("UI")
+                .setMessage("updateActivityUI Activity UI ...")
+                .setPositiveButton("老夫知道了", null)
+                .show()
+        } else {  //  C++ 用异步线程调用到此函数 ---->  异步线程
+            Log.d("Derry", "updateActivityUI 所属于子线程，只能打印日志了..")
+            composeDetailActivity.runOnUiThread { // 可以在子线程里面 操作UI
+                AlertDialog.Builder(composeDetailActivity)
+                    .setTitle("updateActivityUI")
+                    .setMessage("所属于子线程，只能打印日志了..")
+                    .setPositiveButton("老夫知道了", null)
+                    .show()
+            }
+        }
+    }
+
+    fun sortAction() {
         println("sortAction")
 
-        var arr = intArrayOf(11,22,-3,2,4,6,-15)
+        var arr = intArrayOf(11, 22, -3, 2, 4, 6, -15)
         sort(arr)
         for (element in arr) {
             print("${element.toString()} \t")
@@ -203,7 +234,26 @@ class JNIDemo(_composeDetailActivity: ComposeDetailActivity) {
 
     }
 
+    fun parcelStudy() {
+        Log.d("top.zcwfeng","parcelStudy")
+        var parcel = Parcel.obtain()
 
+        parcel.writeInt(12)
+        parcel.writeInt(24)
+        parcel.setDataPosition(0)
+        var r1 = parcel.readInt()
+        var r2 = parcel.readInt()
+        println("top.zcwfeng:parcel 读取结果 r1:$r1,r2:$r2")
+        println("--------------------------")
+        var zParcel = ZParcel.obtain()
+        zParcel.writeInt(1000)
+        zParcel.writeInt(500000)
+        zParcel.setDataPosition(0)
+        var r3 = zParcel.readInt()
+        var r4 = zParcel.readInt()
+        println("top.zcwfeng:zparcel 自定义读取结果 r1:$r3,r2:$r4")
+
+    }
 
 
 }

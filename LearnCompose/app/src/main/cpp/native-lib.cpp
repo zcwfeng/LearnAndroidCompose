@@ -2,6 +2,7 @@
 #include <string>
 #include <cstring>
 #include "common.h"
+#include "ZParcel.h"
 #include <pthread.h>
 
 class MyContext {
@@ -319,7 +320,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     return JNI_VERSION_1_6;
 }
 
-int compare(const jint * value1, const jint * value2){
+int compare(const jint *value1, const jint *value2) {
     return *value2 - *value1;
 }
 
@@ -330,7 +331,7 @@ Java_top_zcwfeng_learncompose_native_JNIDemo_sort(JNIEnv *env, jobject thiz, jin
     jint *intArray = env->GetIntArrayElements(arr, nullptr);
     int len = env->GetArrayLength(arr);
     // 排序, 工具,void qsort(void* __base, size_t __nmemb, size_t __size, int (*__comparator)(const void* __lhs, const void* __rhs));
-    qsort(intArray, len, sizeof(int ),
+    qsort(intArray, len, sizeof(int),
           reinterpret_cast<int (*)(const void *, const void *)>(compare));
     env->ReleaseIntArrayElements(arr, intArray, JNI_COMMIT);
 
@@ -385,53 +386,63 @@ Java_top_zcwfeng_learncompose_native_JNIDemo_clearStaticCache(JNIEnv *env, jclas
 extern "C"
 JNIEXPORT void JNICALL
 Java_top_zcwfeng_learncompose_native_JNIDemo_exception(JNIEnv *env, jclass clazz) {
-    jfieldID f_id = env->GetStaticFieldID(clazz,"name999","Ljava/lang/String;");
+    jfieldID f_id = env->GetStaticFieldID(clazz, "name999", "Ljava/lang/String;");
 
     jthrowable throwable = env->ExceptionOccurred();// 检测本次函数是否有异常
 
-    if(throwable) {
+    if (throwable) {
         LOGD("检测到代码异常native层")
         // clear 异常
         env->ExceptionClear();
-        f_id = env->GetStaticFieldID(clazz,"name1","Ljava/lang/String;");
+        f_id = env->GetStaticFieldID(clazz, "name1", "Ljava/lang/String;");
     }
 
 }
 extern "C"
 JNIEXPORT void JNICALL
 Java_top_zcwfeng_learncompose_native_JNIDemo_exception2(JNIEnv *env, jclass clazz) {
-    jfieldID f_id = env->GetStaticFieldID(clazz,"name222","Ljava/lang/String;");
+    jfieldID f_id = env->GetStaticFieldID(clazz, "name222", "Ljava/lang/String;");
 
     jthrowable throwable = env->ExceptionOccurred();// 检测本次函数是否有异常
 
-    if(throwable) {
+    if (throwable) {
         LOGD("检测到代码异常native层")
         // clear 异常
         env->ExceptionClear();
 
         jclass no_such_clz = env->FindClass("java/lang/NoSuchFieldException");
-        env->ThrowNew(no_such_clz,"native 层NoSuchMethodException，找不到name222，crash！！！");
+        env->ThrowNew(no_such_clz, "native 层NoSuchMethodException，找不到name222，crash！！！");
     }
 
 
 }
+
+extern "C"
+JNIEXPORT jlong JNICALL
+Java_top_zcwfeng_learncompose_native_ZParcel_nativeCreate(JNIEnv *env, jobject thiz) {
+    ZParcel *parcel = new ZParcel();
+    return reinterpret_cast<jlong>(parcel);
+}
 extern "C"
 JNIEXPORT void JNICALL
-Java_top_zcwfeng_learncompose_native_JNIDemo_exception3(JNIEnv *env, jclass clazz) {
-    jmethodID show_mid = env->GetStaticMethodID(clazz,"show", "()V");
-    env->CallStaticVoidMethod(clazz,show_mid);
+Java_top_zcwfeng_learncompose_native_ZParcel_nativeWriteInt(JNIEnv *env, jobject thiz,
+                                                            jlong native_ptr, jint value) {
+    ZParcel *parcel = reinterpret_cast<ZParcel *>(native_ptr);
+    parcel->writeInt(value);
 
-    if(env->ExceptionCheck()) {
-        env->ExceptionDescribe();
-        env->ExceptionClear();
-    }
-    // JNIEnv的操作
-    env->GetStaticFieldID(clazz, "name1", "Ljava/lang/String;");
-
-    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.1");
-    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.2");
-    LOGI("native层：>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.3");
-    // JNIEnv的操作
-    env->GetStaticFieldID(clazz, "name2", "Ljava/lang/String;");
+}
+extern "C"
+JNIEXPORT void JNICALL
+Java_top_zcwfeng_learncompose_native_ZParcel_nativeSetDataPosition(JNIEnv *env, jobject thiz,
+                                                                   jlong native_ptr, jint pos) {
+    ZParcel *parcel = reinterpret_cast<ZParcel *>(native_ptr);
+    parcel->setDataPosition(pos);
+}
+extern "C"
+JNIEXPORT jint JNICALL
+Java_top_zcwfeng_learncompose_native_ZParcel_nativeReadInt(JNIEnv *env, jobject thiz,
+                                                           jlong native_ptr) {
+    ZParcel *parcel = reinterpret_cast<ZParcel *>(native_ptr);
+    return parcel->readInt();
 
 }

@@ -128,6 +128,9 @@ class ComposeDetailActivity : AppCompatActivity() {
                                 NDK_DEMO_FMOD -> {
                                     FmodDemoApp()
                                 }
+                                NDK_DEMO_PARCEL -> {
+                                    jniDemo.parcelStudy()
+                                }
 
                             }
                         }

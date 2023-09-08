@@ -50,7 +50,8 @@ val demoNames = mutableListOf(
     Pair("NDK stdlib工具箱 qsort", NDK_DEMO_10),
     Pair("NDK 缓存策略", NDK_DEMO_11),
     Pair("NDK 3种异常演示", NDK_DEMO_12),
-    Pair("Fmod 变声库的例子", NDK_DEMO_FMOD)
+    Pair("Fmod 变声库的例子", NDK_DEMO_FMOD),
+    Pair("NDK Parcel原理", NDK_DEMO_PARCEL)
 
 
 )
